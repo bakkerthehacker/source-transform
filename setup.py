@@ -8,11 +8,12 @@ from setuptools.command.install import install as setuptools_install
 
 PTH = """
 try:
-    import source_tranform
+    import __transform__
+    import source_transform
 except ImportError:
     pass
 else:
-    source_tranform.register()
+    source_transform.register()
 """
 
 
@@ -51,7 +52,7 @@ setup(
     author='Grant Bakker',
     author_email='grant@bakker.pw',
     description='Python source transformation framework',
-    url='https://bakkerthehacker.github.io/source-transform/',
+    url='https://github.com/bakkerthehacker/source-transform/',
     classifiers=(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
@@ -59,5 +60,6 @@ setup(
         'License :: OSI Approved :: MIT License',
     ),
     packages=['source_transform'],
+    install_requires=[],
     cmdclass={'install': install},
 )
