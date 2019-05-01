@@ -60,6 +60,6 @@ setup(
         'License :: OSI Approved :: MIT License',
     ),
     packages=['source_transform'],
-    install_requires=[],
+    install_requires=['six', 'toolz'],
     cmdclass={'install': install},
 )
