@@ -7,6 +7,7 @@ from setuptools.command.install import install as setuptools_install
 
 
 PTH = """
+# -*- coding: utf-8 -*-
 try:
     import __transform__
     import source_transform

@@ -2,7 +2,8 @@
 from inspect import isabstract
 from inspect import isclass
 
-from toolz.functoolz import complement
+from six.moves import filter
+from six.moves import filterfalse
 
 from .transform import BaseTransform
 
@@ -16,9 +17,9 @@ def all_subclasses(cls):
 
 
 def find_transforms():
-    all_transforms = all_subclasses(BaseTransform)
+    transforms = all_subclasses(BaseTransform)
 
-    all_transforms = filter(isclass, all_transforms)
-    all_transforms = filter(complement(isabstract), all_transforms)
+    transforms = filter(isclass, transforms)
+    transforms = filterfalse(isabstract, transforms)
 
-    return set(all_transforms)
+    return set(transforms)
