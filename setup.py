@@ -61,7 +61,7 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ),
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(exclude=['tests.*', 'tests']),
     install_requires=['six', 'toolz'],
     cmdclass={'install': install},
 )
