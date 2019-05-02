@@ -2,19 +2,27 @@
 import distutils
 import os.path
 
+from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.install import install as setuptools_install
 
 
-PTH = """
+# PTH = """
+# # -*- coding: utf-8 -*-
+# try:
+#     import __transform__
+#     import source_transform
+# except ImportError:
+#     pass
+# else:
+#     source_transform.setup_meta_path()
+# """
+
+DEBUG_PTH = """
 # -*- coding: utf-8 -*-
-try:
-    import __transform__
-    import source_transform
-except ImportError:
-    pass
-else:
-    source_transform.register()
+import __transform__
+import source_transform
+source_transform.setup_meta_path()
 """
 
 
@@ -23,7 +31,7 @@ class install(setuptools_install):
     def initialize_options(self):
         setuptools_install.initialize_options(self)
 
-        contents = 'import sys; exec({!r})\n'.format(PTH)
+        contents = 'import sys; exec({!r})\n'.format(DEBUG_PTH)
         self.extra_path = (self.distribution.metadata.name, contents)
 
     def finalize_options(self):
@@ -60,7 +68,7 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ),
-    packages=['source_transform'],
+    packages=find_packages(exclude=['tests']),
     install_requires=['six', 'toolz'],
     cmdclass={'install': install},
 )

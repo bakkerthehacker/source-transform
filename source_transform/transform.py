@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta
+from abc import abstractmethod
 
 from six import with_metaclass
 
 
 class BaseTransform(with_metaclass(ABCMeta, object)):
 
-    def trigger(self):
-        pass
+    @staticmethod
+    @abstractmethod
+    def trigger(**kwargs):
+        return False
 
-    def transform(self):
-        pass
+    @staticmethod
+    @abstractmethod
+    def transform(data):
+        return data
