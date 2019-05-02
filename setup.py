@@ -7,22 +7,15 @@ from setuptools import setup
 from setuptools.command.install import install as setuptools_install
 
 
-# PTH = """
-# # -*- coding: utf-8 -*-
-# try:
-#     import __transform__
-#     import source_transform
-# except ImportError:
-#     pass
-# else:
-#     source_transform.setup_meta_path()
-# """
-
-DEBUG_PTH = """
+PTH = """
 # -*- coding: utf-8 -*-
-import __transform__
-import source_transform
-source_transform.setup_meta_path()
+try:
+    import __transform__
+    import source_transform
+except ImportError:
+    pass
+else:
+    source_transform.setup_meta_path()
 """
 
 
@@ -31,7 +24,7 @@ class install(setuptools_install):
     def initialize_options(self):
         setuptools_install.initialize_options(self)
 
-        contents = 'import sys; exec({!r})\n'.format(DEBUG_PTH)
+        contents = 'import sys; exec({!r})\n'.format(PTH)
         self.extra_path = (self.distribution.metadata.name, contents)
 
     def finalize_options(self):
