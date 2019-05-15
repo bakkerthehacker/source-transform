@@ -14,5 +14,5 @@ class BaseTransform(with_metaclass(ABCMeta, object)):
 
     @staticmethod
     @abstractmethod
-    def transform(data):
+    def transform(data, **kwargs):
         return data

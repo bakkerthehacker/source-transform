@@ -49,6 +49,15 @@ class TransformFinderLoader(object):
 
         return None
 
+    def get_kwargs(self):
+        return {
+            key: getattr(self, key)
+            for key in (
+                'fullname', 'path', 'file', 'pathname', 'suffix',
+                'mode', 'type', 'found', 'mmaped_file',
+            )
+        }
+
     def get_triggered_transforms(self):
         self.mmaped_file = mmap.mmap(
             self.file.fileno(),
@@ -61,13 +70,7 @@ class TransformFinderLoader(object):
             self.file.seek(0)
             self.mmaped_file.seek(0)
 
-            if transform.trigger(**{
-                key: getattr(self, key)
-                for key in (
-                    'fullname', 'path', 'file', 'pathname', 'suffix',
-                    'mode', 'type', 'found', 'mmaped_file',
-                )
-            }):
+            if transform.trigger(**self.get_kwargs()):
                 triggered_transforms.add(transform)
 
         self.mmaped_file.close()
@@ -101,7 +104,7 @@ class TransformFinderLoader(object):
             data = self.file.read()
 
             for transform in self.triggered_transforms:
-                data = transform.transform(data)
+                data = transform.transform(data, **self.get_kwargs())
 
             code = compile(data, self.pathname, 'exec')
 

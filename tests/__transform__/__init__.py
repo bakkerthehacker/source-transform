@@ -9,7 +9,7 @@ class TestTransform(BaseTransform):
         return mmaped_file.find(b'DEADBEEF') >= 0
 
     @staticmethod
-    def transform(data):
+    def transform(data, **kwargs):
         return data.replace(
             'DEADBEEF',
             'REALBEEF'
