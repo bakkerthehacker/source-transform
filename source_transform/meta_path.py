@@ -82,6 +82,23 @@ class TransformFinderLoader(object):
     def transforms(self):
         return find_transforms()
 
+    def is_package(self, name):
+        if not name == self.fullname:
+            raise ImportError('package name does not match')
+        return self.type == imp.PKG_DIRECTORY
+
+    def get_code(self, name):
+        if not name == self.fullname:
+            raise ImportError('package name does not match')
+
+        data = self.file.read()
+
+        for transform in self.triggered_transforms:
+            data = transform.transform(data, **self.get_kwargs())
+
+        code = compile(data, self.pathname, 'exec')
+        return code
+
     def load_module(self, fullname):
         try:
             return sys.modules[fullname]
@@ -89,7 +106,6 @@ class TransformFinderLoader(object):
             pass
 
         try:
-
             module = imp.new_module(fullname)
             sys.modules[fullname] = module
             module.__file__ = self.pathname
@@ -101,14 +117,7 @@ class TransformFinderLoader(object):
             elif self.type == imp.PY_SOURCE:
                 module.__package__ = fullname.rpartition('.')[0]
 
-            data = self.file.read()
-
-            for transform in self.triggered_transforms:
-                data = transform.transform(data, **self.get_kwargs())
-
-            code = compile(data, self.pathname, 'exec')
-
-            exec(code, module.__dict__)
+            exec(self.get_code(self.fullname), module.__dict__)
 
         except Exception:
             if fullname in sys.modules:
