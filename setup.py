@@ -50,7 +50,7 @@ class install(setuptools_install):
 
 setup(
     name='source-transform',
-    version='0.1.1',
+    version='0.1.2',
     author='Grant Bakker',
     author_email='grant@bakker.pw',
     description='Python source transformation framework',
